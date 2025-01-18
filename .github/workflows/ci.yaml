@@ -1,0 +1,31 @@
+name: CI Workflow
+
+on:         # Conditions, execute only when on 'push' req or 'pull_req' in 'main branch only'.
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:       # Jobs means what work need to be done, we gave here
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code          # We can change name:'anything'
+      uses: actions/checkout@v2    # uses: must be same
+
+    - name: Set up Python
+      uses: actions/setup-python@v2   # uses: must be same
+      with:
+        python-version: '3.9'         # installing py 3.9 ver
+
+    - name: Install dependencies
+      run: |                                  # Run below code first
+        python -m pip install --upgrade pip   
+        pip install pytest streamlit
+
+    - name: Run tests           
+      run: |                          # Finally run '_test.py' file
+        pytest _test.py
